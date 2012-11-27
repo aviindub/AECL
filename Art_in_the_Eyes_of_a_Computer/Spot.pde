@@ -22,16 +22,6 @@ class Spot {
     secRightBound = width;    
   }
 
-  Spot(int upper, int lower, int side1, int side2, color colorOf, int xloc, int yloc) {
-    x = xloc;
-    y = yloc;
-    secHighBound = upper;
-    secLowBound = lower;
-    secLeftBound = side1;
-    secRightBound = side2;
-    clr = colorOf;
-  }
-
   void showPoint() {
     strokeWeight(5);
     stroke(clr);
@@ -48,14 +38,14 @@ class Spot {
   
   void move() {
     rand = (int)random(2);
-    if (rand % 2 == 1 && y >= secHighBound && y < secLowBound)
+    if (y < secHighBound || y > secLowBound) 
       ydirection *= -1;
-    if (y > (secHighBound) || y < secLowBound) 
+    else if (rand % 2 == 1 && y >= secHighBound && y < secLowBound)
       ydirection *= -1;
     rand = (int)random(2);
-    if (rand % 2 == 1 && x <= secRightBound && x >= secLeftBound) 
-      xdirection *= -1;
     if (x > secRightBound || x < secLeftBound) 
+      xdirection *= -1;
+    else if (rand % 2 == 1 && x <= secRightBound && x >= secLeftBound) 
       xdirection *= -1;
     y += (yspeed * ydirection);
     x += (xspeed * xdirection);
