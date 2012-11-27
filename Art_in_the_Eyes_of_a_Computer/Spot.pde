@@ -23,7 +23,7 @@ class Spot {
   }
 
   void showPoint() {
-    strokeWeight(5);
+    strokeWeight(2);
     stroke(clr);
     point(x, y);
   }

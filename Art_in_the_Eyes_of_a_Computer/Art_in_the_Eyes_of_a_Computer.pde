@@ -1,6 +1,6 @@
 String inputImage;
 PImage img = null;
-int numSpots = 1000;
+int numSpots = 20000;
 Spot[] Spots = new Spot[numSpots];
 
 void setup (){
@@ -16,15 +16,17 @@ void setup (){
    int col = 1;
    float space = sqrt(numSpots);
    numSpots = (int)(space*space);
+   int perRow = (int)space;
    for(int i = 0; i < numSpots; i++){
       Spots[i] = new Spot(get((int)(img.width/space * col), (int)(img.height/space * row)), 
                          (int)(img.width/space * col), (int)(img.height/space * row));
       col++;
-      if((col - 1) % space == 0){
+      if((col - 1) % perRow == 0){
         row++;
         col = 1;
       }
-   }   
+   }
+   background(255);   
 }
 
 
