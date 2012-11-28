@@ -1,12 +1,13 @@
 String inputImage;
 PImage img = null;
-int numSpots = 50000;
+int numSpots;
 Spot[] Spots = new Spot[numSpots];
 
 void setup (){
-   //inputImage = "School_of_Athens2.jpg";
-   inputImage = "Us.jpg";
-   //inputImage = "hope.jpeg";
+   //inputImage = "School_of_Athens.jpg";
+   //inputImage = "Us.jpg";
+   //inputImage = "Hope.jpeg";
+   inputImage = "Rocky.jpg";
    colorMode(HSB, 255);
    img = loadImage(inputImage);
    img.loadPixels();   
@@ -16,6 +17,7 @@ void setup (){
    image(img, 0, 0);
    int row = 0;
    int col = 1;
+   numSpots = (img.width*img.height)/10;
    float space = sqrt(numSpots);
    numSpots = (int)(space*space);
    int perRow = (int)space;
