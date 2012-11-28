@@ -12,10 +12,17 @@ class Spot {
   int secRightBound;
   color clr;
   float initHue;
+  float initBrightness;
+  float initSaturation;
+  float curHue;
+  float curBrightness;
+  float curSaturation;
   
   Spot(color initColor, int xloc, int yloc){
     clr = initColor;
     initHue = hue(clr);
+    initBrightness = brightness(clr);
+    initSaturation = saturation(clr);
     x = xloc; 
     y = yloc;
     secHighBound = 0;
@@ -39,14 +46,22 @@ class Spot {
   }
   
   void move() {
-    int curHue = (int)getLocationHue(x,y);
+    curHue = getLocationHue(x,y);
+    curBrightness = getLocationBrightness(x,y);
+    curSaturation = getLocationSaturation(x,y);    
     rand = (int)random(2);
-    if (y < secHighBound || y > secLowBound || abs(curHue-initHue) > 10) 
+    if (y < secHighBound || y > secLowBound ||
+        abs(curHue-initHue) > 10 ||
+        abs(curBrightness-initBrightness) > 50 ||
+        abs(curSaturation-initSaturation) > 50) 
       ydirection *= -1;
     else if (rand % 2 == 1 && y >= secHighBound && y < secLowBound)
       ydirection *= -1;
     rand = (int)random(2);
-    if (x > secRightBound || x < secLeftBound || abs(curHue-initHue) > 10)
+    if (x > secRightBound || x < secLeftBound ||     
+        abs(curHue-initHue) > 10 ||
+        abs(curBrightness-initBrightness) > 50 ||
+        abs(curSaturation-initSaturation) > 50)
       xdirection *= -1;
     else if (rand % 2 == 1 && x <= secRightBound && x >= secLeftBound) 
       xdirection *= -1;

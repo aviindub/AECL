@@ -1,16 +1,17 @@
 String inputImage;
 PImage img = null;
-int numSpots = 30000;
+int numSpots = 50000;
 Spot[] Spots = new Spot[numSpots];
 
 void setup (){
-   frame.setLocation(screen.width/4, screen.height/4);
-   inputImage = "School_of_Athens2.jpg";
+   //inputImage = "School_of_Athens2.jpg";
+   inputImage = "Us.jpg";
+   //inputImage = "hope.jpeg";
    colorMode(HSB, 255);
    img = loadImage(inputImage);
-   img.loadPixels();
+   img.loadPixels();   
    frameRate(1);
-   size(img.width, img.height);
+   size(img.width, img.height);  
    //background(img);
    image(img, 0, 0);
    int row = 0;
@@ -31,6 +32,8 @@ void setup (){
 }
 
 void draw(){
+  frame.setLocation((screen.width - img.width)/2,
+                    (screen.height - img.height)/2);
   for (int i = 0; i < numSpots; i++) {
     Spots[i].move();
     Spots[i].showPoint();
@@ -44,4 +47,12 @@ void stop()
 
 float getLocationHue(int x, int y){
   return hue(img.get(x, y));  
+}
+
+float getLocationSaturation(int x, int y){
+  return saturation(img.get(x, y));  
+}
+
+float getLocationBrightness(int x, int y){
+  return brightness(img.get(x, y));  
 }
