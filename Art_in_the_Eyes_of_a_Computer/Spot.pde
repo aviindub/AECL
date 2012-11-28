@@ -11,9 +11,11 @@ class Spot {
   int secLeftBound;
   int secRightBound;
   color clr;
+  float initHue;
   
   Spot(color initColor, int xloc, int yloc){
     clr = initColor;
+    initHue = hue(clr);
     x = xloc; 
     y = yloc;
     secHighBound = 0;
@@ -37,13 +39,14 @@ class Spot {
   }
   
   void move() {
+    int curHue = (int)getLocationHue(x,y);
     rand = (int)random(2);
-    if (y < secHighBound || y > secLowBound) 
+    if (y < secHighBound || y > secLowBound || abs(curHue-initHue) > 10) 
       ydirection *= -1;
     else if (rand % 2 == 1 && y >= secHighBound && y < secLowBound)
       ydirection *= -1;
     rand = (int)random(2);
-    if (x > secRightBound || x < secLeftBound) 
+    if (x > secRightBound || x < secLeftBound || abs(curHue-initHue) > 10)
       xdirection *= -1;
     else if (rand % 2 == 1 && x <= secRightBound && x >= secLeftBound) 
       xdirection *= -1;

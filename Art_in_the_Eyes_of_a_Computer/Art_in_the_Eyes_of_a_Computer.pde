@@ -1,14 +1,15 @@
 String inputImage;
 PImage img = null;
-int numSpots = 20000;
+int numSpots = 30000;
 Spot[] Spots = new Spot[numSpots];
 
 void setup (){
    frame.setLocation(screen.width/4, screen.height/4);
    inputImage = "School_of_Athens2.jpg";
+   colorMode(HSB, 255);
    img = loadImage(inputImage);
    img.loadPixels();
-   frameRate(15);
+   frameRate(1);
    size(img.width, img.height);
    //background(img);
    image(img, 0, 0);
@@ -29,8 +30,6 @@ void setup (){
    background(255);   
 }
 
-
-
 void draw(){
   for (int i = 0; i < numSpots; i++) {
     Spots[i].move();
@@ -41,4 +40,8 @@ void draw(){
 void stop()
 {
   super.stop();
+}
+
+float getLocationHue(int x, int y){
+  return hue(img.get(x, y));  
 }
