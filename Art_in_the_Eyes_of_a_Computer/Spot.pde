@@ -45,7 +45,7 @@ class Spot {
     return y;
   }
   
-  void move() {
+ float[] getMoveData() {
     curHue = getLocationHue(x,y);
     curBrightness = getLocationBrightness(x,y);
     curSaturation = getLocationSaturation(x,y);    
@@ -65,9 +65,19 @@ class Spot {
       xdirection *= -1;
     else if (rand % 2 == 1 && x <= secRightBound && x >= secLeftBound) 
       xdirection *= -1;
-    y += (yspeed * ydirection);
-    x += (xspeed * xdirection);
+    //y += (yspeed * ydirection);
+    //x += (xspeed * xdirection);
+    float[] data = { (float) x, 
+                     (float) y, 
+                     (float) xdirection,
+                     (float) ydirection 
+                  };
+    return data;
   }
+
+  void setMoveData(float newX, float newY) {
+    x = (int) newX;
+    y = (int) newY;
+  }
+  
 }
-
-
