@@ -72,6 +72,7 @@ void setup () {
   catch (CLBuildException e) {
     e.printStackTrace();
   }
+  println("initialize buffers");
   xBuf = openCL.createFloatBuffer(numSpots);
   yBuf = openCL.createFloatBuffer(numSpots);
   xDirectionBuf = openCL.createFloatBuffer(numSpots);
@@ -97,6 +98,7 @@ void draw() {
   (screen.height - img.height)/2);
 
   //put all data in to buffers for openCL
+  println("populate buffers");
   for (int i = 0; i < numSpots; i++) {
     //Spots[i].move();
     //Spots[i].showPoint();
@@ -110,6 +112,8 @@ void draw() {
   yBuf.rewind();
   xDirectionBuf.rewind();
   yDirectionBuf.rewind();
+  
+  println("populate CL buffers");
   for (int i = 0; i < 6; i++) {
     clBuf[i] = new OpenCLBuffer();
   }
@@ -121,6 +125,7 @@ void draw() {
   clBuf[5].initBuffer( numSpots * BufferUtil.SIZEOF_FLOAT, CLMem.Usage.InputOutput, null );
 
   //attach the buffers to the kernel
+  println("attach the buffers to the kernel");
   for (int i = 0; i < 6; i++) {
     kernelUpdateSpot.setArg(i, clBuf[i].getCLMem());
   }
@@ -129,6 +134,7 @@ void draw() {
   OpenCL.getSingleton().finish();
 
   //get results
+  print("get back the results");
   clBuf[4].read( xResultBuf, 0, numSpots * BufferUtil.SIZEOF_FLOAT, false );
   clBuf[5].read( yResultBuf, 0, numSpots * BufferUtil.SIZEOF_FLOAT, false );
 

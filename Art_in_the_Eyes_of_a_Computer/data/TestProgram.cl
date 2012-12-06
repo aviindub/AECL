@@ -8,8 +8,8 @@ __kernel void updateSpot(__global float *x,
                         const float speedY) {
     
     int gid = get_global_id(0);
-    resultX[gid] = x[gid] + (speedX * directionX[gid];
-    resultY[gid] = y[gid] + (speedY * directionY[gid];
+    resultX[gid] = x[gid] + (speedX * directionX[gid]);
+    resultY[gid] = y[gid] + (speedY * directionY[gid]);
 }
 
 
