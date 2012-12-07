@@ -77,8 +77,8 @@ void setup () {
   yBuf = openCL.createFloatBuffer(numSpots);
   xDirectionBuf = openCL.createFloatBuffer(numSpots);
   yDirectionBuf = openCL.createFloatBuffer(numSpots);
-  xResultBuf = openCL.createByteBuffer(numSpots*OpenCL.SIZEOF_FLOAT);
-  yResultBuf = openCL.createByteBuffer(numSpots*OpenCL.SIZEOF_FLOAT);
+  xResultBuf = openCL.createByteBuffer(numSpots);//*OpenCL.SIZEOF_FLOAT);
+  yResultBuf = openCL.createByteBuffer(numSpots);//*OpenCL.SIZEOF_FLOAT);
   clBuf = new OpenCLBuffer[6];
   
   background(255);
@@ -127,8 +127,8 @@ void draw() {
   
   //get results
   print("get back the results");
-  clBuf[4].read( xResultBuf, 0, numSpots * BufferUtil.SIZEOF_FLOAT, true );
-  clBuf[5].read( yResultBuf, 0, numSpots * BufferUtil.SIZEOF_FLOAT, true );
+  clBuf[4].read( xResultBuf, 0, numSpots * BufferUtil.SIZEOF_FLOAT, false );
+  clBuf[5].read( yResultBuf, 0, numSpots * BufferUtil.SIZEOF_FLOAT, false );
 
   for (int i = 0; i < numSpots; i++) {
     println( xResultBuf.get(i) +" "+ yResultBuf.get(i));
