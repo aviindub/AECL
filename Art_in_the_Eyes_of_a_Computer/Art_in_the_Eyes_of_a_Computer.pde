@@ -36,7 +36,7 @@ void setup () {
   img = loadImage(inputImage);
   img.loadPixels();
   numSpots = (img.width*img.height)/10;  
-  frameRate(1);
+  //frameRate(1);
   size(img.width, img.height);  
   //background(img);
   image(img, 0, 0);
@@ -60,8 +60,8 @@ void setup () {
   //openCL setup
   System.out.println( "Initialize CL" );
   openCL = OpenCL.getSingleton();
-  OpenCL.getSingleton().init( OpenCL.GPU, 0 );
-  OpenCLProgram program = OpenCL.getSingleton().loadProgramFromFile( dataPath("TestProgram.cl"), false );
+  openCL.init( OpenCL.GPU, 0 );
+  OpenCLProgram program = openCL.loadProgramFromFile( dataPath("TestProgram.cl") );
   if ( program == null ) System.exit( 0 );
 
   kernelUpdateSpot = null;
@@ -77,21 +77,13 @@ void setup () {
   yBuf = openCL.createFloatBuffer(numSpots);
   xDirectionBuf = openCL.createFloatBuffer(numSpots);
   yDirectionBuf = openCL.createFloatBuffer(numSpots);
-  xResultBuf = openCL.createByteBuffer(numSpots);
-  yResultBuf = openCL.createByteBuffer(numSpots);
+  xResultBuf = openCL.createByteBuffer(numSpots*OpenCL.SIZEOF_FLOAT);
+  yResultBuf = openCL.createByteBuffer(numSpots*OpenCL.SIZEOF_FLOAT);
   clBuf = new OpenCLBuffer[6];
-  
   
   background(255);
 }
 
-/*
-    float[] data = { (float) x, 
- (float) y,  
- (float) xdirection,
- (float) ydirection 
- };
- */
 
 void draw() {
   frame.setLocation((screen.width - img.width)/2, 
@@ -100,8 +92,6 @@ void draw() {
   //put all data in to buffers for openCL
   println("populate buffers");
   for (int i = 0; i < numSpots; i++) {
-    //Spots[i].move();
-    //Spots[i].showPoint();
     float[] spotData = Spots[i].getMoveData();    
     xBuf.put(spotData[0]);
     yBuf.put(spotData[1]);
@@ -131,15 +121,19 @@ void draw() {
   }
   kernelUpdateSpot.setArg(6, (float) 1);
   kernelUpdateSpot.setArg(7, (float) 1);
-  OpenCL.getSingleton().finish();
-
+  //OpenCL.getSingleton().finish();
+  
+  kernelUpdateSpot.run1D( numSpots, 0 );
+  
   //get results
   print("get back the results");
-  clBuf[4].read( xResultBuf, 0, numSpots * BufferUtil.SIZEOF_FLOAT, false );
-  clBuf[5].read( yResultBuf, 0, numSpots * BufferUtil.SIZEOF_FLOAT, false );
+  clBuf[4].read( xResultBuf, 0, numSpots * BufferUtil.SIZEOF_FLOAT, true );
+  clBuf[5].read( yResultBuf, 0, numSpots * BufferUtil.SIZEOF_FLOAT, true );
 
   for (int i = 0; i < numSpots; i++) {
+    println( xResultBuf.get(i) +" "+ yResultBuf.get(i));
     Spots[i].setMoveData((float) xResultBuf.get(i),(float) yResultBuf.get(i));
+    Spots[i].showPoint();
   }
 
   openCL.finish();
